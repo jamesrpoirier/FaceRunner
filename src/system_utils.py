@@ -5,6 +5,8 @@ FaceRunner System Utilities - System monitoring and basic utilities.
 import subprocess
 import platform
 import socket
+import os
+import re
 from pathlib import Path
 
 OLLAMA_PORT = 11434
@@ -36,7 +38,10 @@ def get_system_load():
         mem = psutil.virtual_memory().percent
         gpu_load = None
         try:
-            result = subprocess.run(["nvidia-smi", "--query-gpu=utilization.gpu", "--format=csv,noheader,nounits"], capture_output=True, text=True)
+            result = subprocess.run(
+                ["nvidia-smi", "--query-gpu=utilization.gpu", "--format=csv,noheader,nounits"],
+                capture_output=True, text=True
+            )
             if result.returncode == 0:
                 gpu_load = result.stdout.strip().split('\n')[0]
         except Exception:
@@ -60,3 +65,28 @@ def get_os():
     """Get the operating system."""
     return platform.system().lower()
 
+def read_service_logs(log_path, level=None, search=None, max_lines=500):
+    """
+    Read and filter logs from a log file.
+    Args:
+        log_path (str): Path to the log file.
+        level (str, optional): Log level to filter (e.g., 'INFO', 'ERROR').
+        search (str, optional): Search term to filter log lines.
+        max_lines (int): Maximum number of lines to return.
+    Returns:
+        List[str]: Filtered log lines.
+    """
+    if not os.path.exists(log_path):
+        return [f"Log file not found: {log_path}"]
+    with open(log_path, 'r') as f:
+        lines = f.readlines()
+    filtered = []
+    for line in reversed(lines):
+        if level and level not in line:
+            continue
+        if search and not re.search(search, line, re.IGNORECASE):
+            continue
+        filtered.append(line.rstrip())
+        if len(filtered) >= max_lines:
+            break
+    return list(reversed(filtered))
