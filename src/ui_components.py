@@ -99,8 +99,25 @@ def create_model_browser_ui():
                     else:
                         st.error(msg)
             st.markdown("---")
-    else:
-        st.info("No models found.")
+
+
+def log_viewer_ui():
+    """Streamlit UI for viewing and filtering service logs."""
+    st.header("Log Viewer")
+    import os
+    log_files = {
+        "FaceRunner": os.path.expanduser("~/.facerunner/logs/facerunner.log"),
+        "Ollama": os.path.expanduser("~/.facerunner/logs/ollama.log"),
+        "Open WebUI": os.path.expanduser("~/.facerunner/logs/openwebui.log")
+    }
+    service = st.selectbox("Select Service", list(log_files.keys()))
+    level = st.selectbox("Log Level", ["ALL", "INFO", "WARNING", "ERROR"])
+    search = st.text_input("Search logs")
+    log_path = log_files[service]
+    level_filter = None if level == "ALL" else level
+    from system_utils import read_service_logs
+    logs = read_service_logs(log_path, level=level_filter, search=search)
+    st.text_area("Logs", "\n".join(logs), height=400)
 """
 FaceRunner UI Components - Streamlit UI components and helpers.
 """

@@ -2,8 +2,11 @@
 FaceRunner Web UI - Main application entry point.
 """
 
+
 import streamlit as st
 import time
+import logging
+import os
 
 from system_utils import get_gpu_info, get_host_ip
 from network_utils import verify_accessibility, configure_network
@@ -21,6 +24,15 @@ OLLAMA_PORT = 11434
 WEBUI_PORT = 8080
 
 def main():
+    # Setup logging to ~/.facerunner/logs/facerunner.log
+    log_path = os.path.expanduser("~/.facerunner/logs/facerunner.log")
+    os.makedirs(os.path.dirname(log_path), exist_ok=True)
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s %(message)s',
+        handlers=[logging.FileHandler(log_path), logging.StreamHandler()]
+    )
+
     # Custom CSS to reduce top margin and bring sidebar closer to the top
     st.markdown("""
         <style>
@@ -96,10 +108,12 @@ def main():
         "🔗 VS Code Integration",
         "🛠️ Setup & Management",
         "⚙️ Settings"
+            ,"📝 Log Viewer"
     ]
+
     if "active_tab" not in st.session_state:
         st.session_state["active_tab"] = 0
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(tab_labels)
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(tab_labels)
     active_tab = st.session_state["active_tab"]
 
     with tab1:
@@ -135,6 +149,10 @@ def main():
 
     with tab5:
         create_settings_ui()
+
+        with tab6:
+            from ui_components import log_viewer_ui
+            log_viewer_ui()
 
 if __name__ == "__main__":
     try:

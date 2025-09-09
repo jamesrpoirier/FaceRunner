@@ -168,12 +168,16 @@ def launch_webui_background():
             click.echo("✅ Existing web UI terminated.")
 
         click.echo("🚀 Launching FaceRunner web UI in background...")
+
+        log_path = os.path.expanduser("~/.facerunner/logs/facerunner.log")
+        os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        log_file = open(log_path, "a")
         process = subprocess.Popen([
             "streamlit", "run", "src/main.py",
             "--server.address", "0.0.0.0",
             "--server.port", str(STREAMLIT_PORT),
             "--server.headless", "true"
-        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        ], stdout=log_file, stderr=log_file)
 
         time.sleep(2)
         if check_webui_running():
@@ -206,10 +210,13 @@ def setup(verbose):
       click.echo("🚀 Starting Ollama service on localhost...")
       env = os.environ.copy()
       env["OLLAMA_HOST"] = "localhost"
-      proc = subprocess.Popen(["ollama", "serve"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env)
+      log_path = os.path.expanduser("~/.facerunner/logs/ollama.log")
+      os.makedirs(os.path.dirname(log_path), exist_ok=True)
+      log_file = open(log_path, "a")
+      proc = subprocess.Popen(["ollama", "serve"], stdout=log_file, stderr=log_file, env=env)
       time.sleep(2)
       return proc
-      # Check if ollama is installed
+    # Check if ollama is installed
     def is_ollama_installed():
         return subprocess.run(["which", "ollama"], capture_output=True).returncode == 0
 
@@ -255,9 +262,14 @@ def setup(verbose):
                 return
         # Start Open WebUI locally
         click.echo("🚀 Starting Open WebUI locally...")
+        log_path = os.path.expanduser("~/.facerunner/logs/openwebui.log")
+        os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        log_file = open(log_path, "a")
         webui_proc = subprocess.Popen([
-            "open-webui", "serve", "--host", "0.0.0.0", "--port", str(WEBUI_PORT)
-        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            "open-webui", "serve",
+            "--host", "0.0.0.0",
+            "--port", str(WEBUI_PORT)
+        ], stdout=log_file, stderr=log_file)
         time.sleep(2)
         click.echo(f"🌐 Open WebUI (chat interface): http://localhost:{WEBUI_PORT}")
         # Start FaceRunner web UI (Streamlit)
