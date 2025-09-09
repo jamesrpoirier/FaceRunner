@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "FaceRunner"
+version = "0.1.0"
+description = "CLI tool for orchestrating Ollama and Open WebUI with Hugging Face models"
+authors = [
+    {name = "James Poirier", email = "jpoirier@nfit.com"},
+]
+dependencies = [
+    "click>=8.0.0",
+    "docker>=6.0.0",
+    "requests>=2.25.0",
+    "streamlit>=1.28.0",
+    "pyyaml",
+    "pandas",
+    "psutil",
+    "open-webui"
+]
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "MIT"}
+
+[project.scripts]
+facerunner = "facerunner:main"
+
+[tool.setuptools]
+packages = ["facerunner"]
+package-dir = {"" = "src"}
+
+[project.urls]
+Homepage = "https://github.com/jpoirier-nfit/ai_llm_helper_docs"
+Repository = "https://github.com/jpoirier-nfit/ai_llm_helper_docs.git"
