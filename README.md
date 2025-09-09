@@ -29,22 +29,18 @@ FaceRunner/
 
 ### Prerequisites
 - Python 3.8+
-- Ollama and Open WebUI installed and available in your PATH
 - (Optional) GPU support for acceleration
 
-
-### Recommended Installation (for most users)
-We recommend installing FaceRunner with [pipx](https://pipxproject.github.io/pipx/) for an isolated, global CLI:
+### Installation (for all users)
+Create a Python virtual environment and install FaceRunner in editable mode:
 
 ```bash
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
-pipx install .
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
 ```
 
-This makes the `facerunner` command available globally, without affecting your system Python packages.
-
-After installation, you can run FaceRunner commands directly:
+After installation, you can run FaceRunner commands from the same terminal session:
 ```bash
 facerunner setup
 facerunner start
@@ -67,7 +63,7 @@ Just run:
 ```bash
 facerunner setup
 ```
-This command will automatically start Ollama, Open WebUI, and the FaceRunner Web UI. For most users, this is all you need—no manual steps required.
+This command will automatically start Ollama, Oapen WebUI, and the FaceRunner Web UI. For most users, this is all you need—no manual steps required.
 
 ---
 
@@ -98,10 +94,6 @@ facerunner webui
 - The web UI allows you to select parameter sizes for supported models (e.g., gemma2:2b, gemma2:9b, gemma2:27b, etc.).
 - Popular models are suggested in the UI for quick access.
 
-### VS Code Integration
-- You can use the Continue extension in VS Code on the same machine as FaceRunner.
-- Configure Continue to use `http://localhost:11434` for the Ollama API.
-
 ## Troubleshooting
 - If a service does not start, run it manually in your terminal to see error output (e.g., `ollama serve`, `open-webui serve --host 0.0.0.0 --port 8080`).
 - Make sure all required executables are installed and available in your PATH.
@@ -111,15 +103,3 @@ facerunner webui
 - All code is in `src/` for easy modification.
 - The CLI and web UI are designed to be extensible for new features and model types.
 - No Docker, no network config, no firewall rules—just local Python and binaries.
-
-## Suggestions & Roadmap
-- Add support for more model formats (ONNX, TensorFlow, etc.)
-- Add user authentication for the web UI
-- Add model performance monitoring
-- Add multi-user support
-- Add more RESTful API endpoints
-- Expand documentation and troubleshooting guides
-
----
-
-FaceRunner is designed for simplicity, reliability, and local-first AI workflows. If you have feature requests or want to contribute, open an issue or pull request!
