@@ -113,6 +113,38 @@ This document outlines the features and roadmap for FaceRunner, a tool for manag
 - Plugin system for extensibility
 - Mobile app companion
 
+## Upcoming Detailed Features
+
+### On Hold: Model/Hugging Face Enhancement
+
+**Status:** ⏸️ On Hold (Deferred for future releases)
+
+**Goal:**
+Expand FaceRunner's model compatibility to support a wider range of Hugging Face models, including transformers, ONNX, TensorFlow, and other formats beyond GGUF/Ollama-compatible models.
+
+**Key Objectives:**
+- Integrate Hugging Face's `transformers` library for direct model loading and inference.
+- Add support for ONNX and TensorFlow models, allowing users to run models that are not natively supported by Ollama.
+- Provide a unified interface in both CLI and web UI for listing, pulling, and running any supported Hugging Face model.
+- Enable automatic conversion or optimization (quantization, pruning) for models where possible.
+- Allow users to upload custom models and manage them through the FaceRunner UI.
+- Display model format, size, and hardware compatibility in the UI.
+- Add error handling and feedback for unsupported or failed model loads.
+
+**User Stories:**
+- As a user, I want to run any Hugging Face model locally, regardless of format.
+- As a user, I want to see which models are compatible with my hardware (CPU/GPU).
+- As a user, I want to upload and manage my own custom models.
+- As a user, I want to optimize models for faster inference.
+
+**Planned Steps (Deferred):**
+1. Research and integrate Hugging Face `transformers` for direct model support.
+2. Add ONNX and TensorFlow runtime support.
+3. Update CLI and web UI to allow selection and management of all supported model types.
+4. Implement model upload and conversion features.
+5. Add UI elements for model details, compatibility, and optimization options.
+6. Test with a variety of models and hardware setups.
+
 ---
 
-This feature list will be updated as development progresses. Features marked as "Planned" are prioritized based on user feedback and community needs.
+This feature is currently on hold and will be revisited in a future release based on user demand and project priorities.
